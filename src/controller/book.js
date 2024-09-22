@@ -37,7 +37,11 @@ const GET_BOOK = async (req, res) => {
 
 const GET_USER_BOOK = async (req, res) => {
     try {
-        const response = await BookModel.find({userId: req.params.userId});
+
+        //---cia pataisome vietoj params.body.---find({userId: req.body.userId}) nes Route pridesim auth,vietoj userId---
+        // const response = await BookModel.find({userId: req.params.userId});
+
+        const response = await BookModel.find({userId: req.body.userId});
         return res.status(200).json({ book: response});
     } catch (err) {
         console.log(err);
@@ -46,10 +50,10 @@ const GET_USER_BOOK = async (req, res) => {
 };
 
 
-const GET_USER_BOOK_BY_ID = async (req, res) => {
+const GET_BOOK_BY_ID = async (req, res) => {
     try {
-        const response = await BookModel.findOne({id: params.id});
-        return res.status(200).json({books: response});
+        const response = await BookModel.findOne({id: req.params.id});
+        return res.status(200).json({book: response});
     } catch (err) {
         console.log(err);
         return res.status(500).json({message: "error in application"});
@@ -59,11 +63,11 @@ const GET_USER_BOOK_BY_ID = async (req, res) => {
 
 const DELETE_BOOK_BY_ID = async (req, res) => {
     try {
-        const response = await BookModel.findOne({id: params.id});
+        const response = await BookModel.findOneAndDelete({id: req.params.id});
 
-        if (response.userId !== req.body.userId) {
-            return res.status(403).json({message: "We can only delete your own books"});
-        }
+        // if (!response.userId !== req.body.userId) {
+        //     return res.status(403).json({message: "We can only delete your own books"});
+        // }
 
         if (!response) {
             return res.status(404).json({message: "This book does not exist"});
@@ -75,4 +79,4 @@ const DELETE_BOOK_BY_ID = async (req, res) => {
     }
 };
 
-export {INSERT_BOOK, GET_BOOK,  GET_USER_BOOK, GET_USER_BOOK_BY_ID, DELETE_BOOK_BY_ID,};
+export {INSERT_BOOK, GET_BOOK,  GET_USER_BOOK, GET_BOOK_BY_ID, DELETE_BOOK_BY_ID,};

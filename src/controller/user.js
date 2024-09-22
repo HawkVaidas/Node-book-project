@@ -45,7 +45,8 @@ const LOGIN = async (req, res) => {
          },process.env.JWT_SECRET,
          {expiresIn: "12H"});
         
-         return res.status(200).json({token: token, message: "Login was ok!"});
+        //  return res.status(200).json({token: token, message: "Login was ok!"});
+        return res.status(200).json({token: token, userId: user.id});
 
     } catch (err) {
         console.log(err);
@@ -75,6 +76,14 @@ const DELETE_USER_BY_ID = async (req, res) => {
         return res.status(500).json({message: "error in application"});
     }
 };
+const VALIDATE_LOGIN = async (req, res) => {
+    try {
+        return res.status(200).json({message: "User OK"});
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({message: "error in application"});
+    }
+};
 
 
-export {CREATE_USER, LOGIN, GET_USER_BY_ID, DELETE_USER_BY_ID}
+export {CREATE_USER, LOGIN, GET_USER_BY_ID, DELETE_USER_BY_ID,VALIDATE_LOGIN}
